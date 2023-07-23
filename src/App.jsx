@@ -5,6 +5,7 @@ import { Button } from './components/ui/button';
 import Dashboard from './pages/Dashboard';
 import Employees from './pages/Employees';
 import Leaves from './pages/Leaves';
+import Login from './pages/Login';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/leaves" element={<Leaves />} />
           <Route path="/employees" element={<Employees />} />
         </Route>
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
