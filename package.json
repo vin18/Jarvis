@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",
+    "@hookform/resolvers": "^3.1.1",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@tanstack/react-query": "^4.32.0",
@@ -21,9 +22,11 @@
     "lucide-react": "^0.263.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.45.2",
     "react-router-dom": "^6.14.2",
     "tailwind-merge": "^1.14.0",
-    "tailwindcss-animate": "^1.0.6"
+    "tailwindcss-animate": "^1.0.6",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
