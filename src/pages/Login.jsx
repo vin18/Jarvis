@@ -57,10 +57,11 @@ export default function Login() {
   // TODO:
   // 1. Add icons inside the input box
   // 2. Add github and google authentication
+  // 3. Show or hide password
 
   return (
     <div className="min-h-screen grid place-items-center">
-      <Card className="container max-w-md px-0">
+      <Card className="container shadow max-w-md px-0">
         <CardHeader className="space-y-1 text-center">
           <CardTitle className="text-2xl mb-1 flex justify-center items-center">
             <img className="w-8" src={Logo} /> <span>JARVIS</span>
