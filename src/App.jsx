@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import Employees from './pages/Employees';
 import Leaves from './pages/Leaves';
 import Login from './pages/Login';
+import ProtectedPage from './pages/ProtectedPage';
 
 const queryClient = new QueryClient();
 
@@ -17,7 +18,13 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route element={<AppLayout />}>
+          <Route
+            element={
+              <ProtectedPage>
+                <AppLayout />
+              </ProtectedPage>
+            }
+          >
             <Route index element={<Navigate replace to="dashboard" />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/leaves" element={<Leaves />} />
