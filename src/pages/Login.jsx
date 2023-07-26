@@ -2,6 +2,8 @@ import React from 'react';
 import { cn } from '../lib/utils';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { Box, Image, KeyRound, Loader2 } from 'lucide-react';
 
 import {
   Card,
@@ -23,9 +25,8 @@ import {
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
-import { Image, KeyRound } from 'lucide-react';
 import Logo from '../../public/vite.svg';
-import { useForm } from 'react-hook-form';
+import { useLogin } from '../features/authentication/useLogin';
 
 const formSchema = z.object({
   email: z
@@ -39,6 +40,8 @@ const formSchema = z.object({
 });
 
 export default function Login() {
+  const { isLoading, login } = useLogin();
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,8 +51,12 @@ export default function Login() {
   });
 
   const onSubmit = (values) => {
-    console.log(values);
+    login(values);
   };
+
+  // TODO:
+  // 1. Add icons inside the input box
+  // 2. Add github and google authentication
 
   return (
     <div className="min-h-screen grid place-items-center">
@@ -123,22 +130,16 @@ export default function Login() {
             </CardContent>
             <CardFooter className="flex flex-col space-y-3">
               <Button
-                onClick={(event) => {
-                  event.preventDefailt();
-                  onSubmit({
-                    email: 'test@example.com',
-                    password: 'Test@1234',
-                  });
-                }}
-                className="w-full"
+                disabled={isLoading}
+                type="submit"
+                className={`w-full ${isLoading && 'opacity-60'}`}
               >
-                <KeyRound className="mr-2 h-4 w-4" />
-                Sign In as Guest user
-              </Button>
-
-              <Button type="submit" className="w-full">
-                <KeyRound className="mr-2 h-4 w-4" />
-                Sign In to your account
+                {isLoading ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <KeyRound className="mr-2 h-4 w-4" />
+                )}
+                {isLoading ? 'Please wait...' : 'Sign In to your account'}
               </Button>
             </CardFooter>
           </form>
