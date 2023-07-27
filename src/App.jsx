@@ -10,6 +10,7 @@ import Employees from './pages/Employees';
 import Leaves from './pages/Leaves';
 import Login from './pages/Login';
 import ProtectedPage from './pages/ProtectedPage';
+import Users from './pages/Users';
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/leaves" element={<Leaves />} />
             <Route path="/employees" element={<Employees />} />
+            <Route path="/users" element={<Users />} />
           </Route>
           <Route path="/login" element={<Login />} />
         </Routes>

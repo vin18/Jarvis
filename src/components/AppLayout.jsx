@@ -13,12 +13,13 @@ export default function AppLayout() {
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
     { name: 'Leaves', href: '/leaves', icon: SunIcon },
     { name: 'Employees', href: '/employees', icon: UsersIcon },
+    { name: 'Users', href: '/users', icon: UserPlusIcon },
   ];
 
   return (
-    <div>
+    <div className="flex">
       <Sidebar navigation={navigation} />
-      <main className="h-full w-full">
+      <main className="bg-gray-50 h-full w-full">
         <Outlet />
       </main>
     </div>
