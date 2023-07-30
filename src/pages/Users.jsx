@@ -26,12 +26,10 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import Logo from '../../public/vite.svg';
-import { useLogin } from '../features/authentication/useLogin';
+import { useSignup } from '../features/authentication/useSignup';
 
 const formSchema = z.object({
-  fullName: z
-    .string()
-    .nonempty('Fullname is required'),
+  fullName: z.string().nonempty('Fullname is required'),
   email: z
     .string()
     .nonempty('Email is required')
@@ -43,7 +41,7 @@ const formSchema = z.object({
 });
 
 export default function Users() {
-  const { isLoading, login } = useLogin();
+  const { isLoading, signup } = useSignup();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -55,13 +53,13 @@ export default function Users() {
   });
 
   const onSubmit = (values) => {
-    login(values);
+    signup({ ...values }, { onSettled: form.reset });
   };
 
   // TODO:
   // 1. Add icons inside the input box
-  // 2. Add github and google authentication
-  // 3. Show or hide password
+  // 2. Show or hide password
+  // 3. Verify signup on mail
 
   return (
     <div className="min-h-screen flex justify-center items-center w-full">
@@ -124,22 +122,6 @@ export default function Users() {
                     <FormLabel className="text-normal">Password</FormLabel>
                     <FormControl>
                       <Input id="password" type="password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="passwordConfirm"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-normal">
-                      Repeat Password
-                    </FormLabel>
-                    <FormControl>
-                      <Input id="passwordConfirm" type="password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
