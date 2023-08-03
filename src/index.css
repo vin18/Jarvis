@@ -75,4 +75,8 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  th {
+    @apply py-3 pl-6 text-left text-xs font-medium uppercase tracking-wider text-gray-500;
+  }
 }
