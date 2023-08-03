@@ -8,42 +8,18 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { Button } from '../components/ui/button';
+
 import { useState } from 'react';
 import { useEmployees } from '../features/employees/useEmployees';
-import { DeleteIcon, EditIcon, Trash2Icon } from 'lucide-react';
-
-// const employees = [
-//   {
-//     id: 0,
-//     name: 'Walter White',
-//     designation: 'Web Developer',
-//     experience: 3,
-//   },
-//   {
-//     id: 1,
-//     name: 'Walter White',
-//     designation: 'Web Developer',
-//     experience: 3,
-//   },
-//   {
-//     id: 2,
-//     name: 'Walter White',
-//     designation: 'Web Developer',
-//     experience: 3,
-//   },
-//   {
-//     id: 3,
-//     name: 'Walter White',
-//     designation: 'Web Developer',
-//     experience: 3,
-//   },
-//   {
-//     id: 4,
-//     name: 'Walter White',
-//     designation: 'Web Developer',
-//     experience: 3,
-//   },
-// ];
+import {
+  DeleteIcon,
+  EditIcon,
+  FileWarningIcon,
+  Trash2Icon,
+} from 'lucide-react';
+import { useDeleteEmployee } from '../features/employees/useEmployeeDelete';
+import DeleteEmployee from '../components/employees/DeleteEmployee';
 
 export default function Employees() {
   const { isLoading, employees } = useEmployees();
@@ -51,8 +27,8 @@ export default function Employees() {
   if (isLoading) return <p>Loading..</p>;
 
   return (
-    <div className="flex flex-1 flex-row h-screen">
-      <div className="h-fit w-8/12 shrink-0 flex-col overflow-hidden rounded-lg bg-white m-8 shadow">
+    <div className="flex flex-1 flex-row h-screen ml-15">
+      <div className="h-fit w-6/12 shrink-0 flex-col overflow-hidden rounded-lg bg-white m-8 shadow">
         <div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
           <div className="-ml-4 -mt-2 flex flex-wrap items-center justify-between sm:flex-nowrap">
             <div className="ml-4 mt-2">
@@ -61,12 +37,7 @@ export default function Employees() {
               </h3>
             </div>
             <div className="ml-4 mt-2 flex-shrink-0">
-              <button
-                type="button"
-                className="relative inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                Create new employee
-              </button>
+              <Button>Create Employee</Button>
             </div>
           </div>
         </div>
@@ -81,7 +52,7 @@ export default function Employees() {
                       <th scope="col">Employee</th>
                       <th scope="col">ID</th>
                       <th scope="col">Designation</th>
-                      <th scope="col">Experience</th>
+                      <th scope="col">YOE</th>
                       <th scope="col" className="relative py-3 pl-6">
                         <span className="sr-only">Edit</span>
                       </th>
@@ -105,7 +76,6 @@ export default function Employees() {
                                 isSelected,
                             }
                           )}
-                          onClick={() => setIsSelected(el.id)}
                         >
                           <TableCell
                             className={classNames(
@@ -153,20 +123,17 @@ export default function Employees() {
 
                           <TableCell
                             className={classNames(
-                              'whitespace-nowrap py-4 pl-6 flex text-sm font-medium text-gray-900 space-x-4',
+                              'whitespace-nowrap py-4 pl-6 flex text-sm font-medium text-gray-900 space-x-6',
                               {
                                 'text-white': isSelected,
                               }
                             )}
                           >
-                            <button className="flex items-center">
-                              <EditIcon />
-                              <span>Edit</span>
+                            <button className="flex items-center text-primary">
+                              Edit
                             </button>
-                            <button className="flex items-center">
-                              <Trash2Icon />
-                              <span>Delete</span>
-                            </button>
+
+                            <DeleteEmployee employeeId={el.id} />
                           </TableCell>
                         </TableRow>
                       );

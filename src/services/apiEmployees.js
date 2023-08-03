@@ -9,3 +9,12 @@ export async function getEmployees() {
 
   return employees;
 }
+
+export async function deleteEmployee(employeeId) {
+  const { error } = await supabase
+    .from('employees')
+    .delete()
+    .eq('id', employeeId);
+
+  if (error) throw new Error(error.message);
+}
