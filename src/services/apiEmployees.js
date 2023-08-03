@@ -18,3 +18,18 @@ export async function deleteEmployee(employeeId) {
 
   if (error) throw new Error(error.message);
 }
+
+export async function editEmployee(employee, employeeId) {
+  const { data, error } = await supabase
+    .from('employees')
+    .update({ ...employee })
+    .eq('id', employeeId)
+    .select()
+    .single();
+
+  console.log(data);
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}

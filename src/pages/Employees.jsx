@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -8,9 +9,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Button } from '../components/ui/button';
+import { Button } from '@/components/ui/button';
 
-import { useState } from 'react';
 import { useEmployees } from '../features/employees/useEmployees';
 import {
   DeleteIcon,
@@ -18,10 +18,11 @@ import {
   FileWarningIcon,
   Trash2Icon,
 } from 'lucide-react';
-import { useDeleteEmployee } from '../features/employees/useEmployeeDelete';
-import DeleteEmployee from '../components/employees/DeleteEmployee';
+import DeleteEmployee from '@/components/employees/DeleteEmployee';
+import EditEmployee from '../components/employees/EditEmployee';
 
 export default function Employees() {
+  const [isEditModal, setEditModal] = useState(null);
   const { isLoading, employees } = useEmployees();
 
   if (isLoading) return <p>Loading..</p>;
@@ -129,9 +130,20 @@ export default function Employees() {
                               }
                             )}
                           >
-                            <button className="flex items-center text-primary">
+                            <span
+                              className="text-primary"
+                              onClick={() => setEditModal(el.id)}
+                            >
                               Edit
-                            </button>
+                            </span>
+
+                            {isEditModal === el.id && (
+                              <EditEmployee
+                                employee={el}
+                                employeeId={el.id}
+                                onCloseModal={() => setEditModal(null)}
+                              />
+                            )}
 
                             <DeleteEmployee employeeId={el.id} />
                           </TableCell>
