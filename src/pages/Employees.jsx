@@ -1,29 +1,19 @@
 import classNames from 'classnames';
 import { useState } from 'react';
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
 
+import AlertModal from '@/components/common/AlertModal';
+import { Button } from '@/components/ui/button';
+import { TableCell, TableRow } from '@/components/ui/table';
+import EditEmployee from '@/components/employees/EditEmployee';
+import { useDeleteEmployee } from '../features/employees/useEmployeeDelete';
 import { useEmployees } from '../features/employees/useEmployees';
-import {
-  DeleteIcon,
-  EditIcon,
-  FileWarningIcon,
-  Trash2Icon,
-} from 'lucide-react';
-import DeleteEmployee from '@/components/employees/DeleteEmployee';
-import EditEmployee from '../components/employees/EditEmployee';
 
 export default function Employees() {
   const [isEditModal, setEditModal] = useState(null);
+  const [showDeleteEmployeeModal, setDeleteEmployeeModal] = useState(null);
+
   const { isLoading, employees } = useEmployees();
+  const { isDeleting, deleteEmployee } = useDeleteEmployee();
 
   if (isLoading) return <p>Loading..</p>;
 
@@ -145,7 +135,12 @@ export default function Employees() {
                               />
                             )}
 
-                            <DeleteEmployee employeeId={el.id} />
+                            <button
+                              className="text-primary"
+                              onClick={() => setDeleteEmployeeModal(el.id)}
+                            >
+                              Delete
+                            </button>
                           </TableCell>
                         </TableRow>
                       );
@@ -156,6 +151,21 @@ export default function Employees() {
             </div>
           </div>
         </div>
+
+        <AlertModal
+          onClose={() => setDeleteEmployeeModal(null)}
+          open={Boolean(showDeleteEmployeeModal)}
+          confirmationLabel="Delete"
+          confirmationVariant="destructive"
+          onConfirm={() => {
+            deleteEmployee(showDeleteEmployeeModal);
+            setDeleteEmployeeModal(null);
+          }}
+          title="Delete employee?"
+          description="This action cannot be undone. This will permanently delete employee and remove your data from our servers."
+          isLoading={isDeleting}
+          isLoadingLabel="Deleting.."
+        />
       </div>
     </div>
   );
