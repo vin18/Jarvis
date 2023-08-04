@@ -1,10 +1,12 @@
-import classNames from 'classnames';
 import { useState } from 'react';
+import classNames from 'classnames';
 
 import AlertModal from '@/components/common/AlertModal';
+import EditEmployee from '@/components/employees/EditEmployee';
 import { Button } from '@/components/ui/button';
 import { TableCell, TableRow } from '@/components/ui/table';
-import EditEmployee from '@/components/employees/EditEmployee';
+import SlideOver from '@/components/ui/slide-over';
+import { SlideOverType, useSlideOver } from '../contexts/slideOver';
 import { useDeleteEmployee } from '../features/employees/useEmployeeDelete';
 import { useEmployees } from '../features/employees/useEmployees';
 
@@ -14,6 +16,7 @@ export default function Employees() {
 
   const { isLoading, employees } = useEmployees();
   const { isDeleting, deleteEmployee } = useDeleteEmployee();
+  const { slideOver, setSlideOver } = useSlideOver();
 
   if (isLoading) return <p>Loading..</p>;
 
@@ -28,7 +31,9 @@ export default function Employees() {
               </h3>
             </div>
             <div className="ml-4 mt-2 flex-shrink-0">
-              <Button>Create Employee</Button>
+              <Button onClick={() => setSlideOver(SlideOverType.ADD_EMPLOYEE)}>
+                Create Employee
+              </Button>
             </div>
           </div>
         </div>
@@ -151,6 +156,18 @@ export default function Employees() {
             </div>
           </div>
         </div>
+
+        <SlideOver
+          title={
+            slideOver === SlideOverType.ADD_EMPLOYEE
+              ? 'Create Employee'
+              : slideOver === SlideOverType.EDIT_EMPLOYEE
+              ? 'Edit Employee'
+              : ''
+          }
+          onClose={() => setSlideOver(SlideOverType.NONE)}
+          open={slideOver === SlideOverType.ADD_EMPLOYEE}
+        ></SlideOver>
 
         <AlertModal
           onClose={() => setDeleteEmployeeModal(null)}
