@@ -10,7 +10,10 @@ export const SlideOverType = {
 export const SlideOverlContext = createContext();
 
 function SlideOverProvider({ children }) {
-  const [slideOver, setSlideOver] = useState(SlideOverType.NONE);
+  const [slideOver, setSlideOver] = useState({
+    type: SlideOverType.NONE,
+    payload: null,
+  });
 
   const value = { slideOver, setSlideOver };
 

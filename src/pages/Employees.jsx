@@ -1,24 +1,24 @@
-import { useState } from 'react';
-import classNames from 'classnames';
+import { useState } from 'react'
+import classNames from 'classnames'
 
-import AlertModal from '@/components/common/AlertModal';
-import EditEmployee from '@/components/employees/EditEmployee';
-import { Button } from '@/components/ui/button';
-import { TableCell, TableRow } from '@/components/ui/table';
-import SlideOver from '@/components/ui/slide-over';
-import { SlideOverType, useSlideOver } from '../contexts/slideOver';
-import { useDeleteEmployee } from '../features/employees/useEmployeeDelete';
-import { useEmployees } from '../features/employees/useEmployees';
+import AlertModal from '@/components/common/AlertModal'
+import { Button } from '@/components/ui/button'
+import { TableCell, TableRow } from '@/components/ui/table'
+import SlideOver from '@/components/ui/slide-over'
+import { SlideOverType, useSlideOver } from '../contexts/slideOver'
+import { useDeleteEmployee } from '../features/employees/useEmployeeDelete'
+import { useEmployees } from '../features/employees/useEmployees'
+import CreateEmployeeForm from '../components/employees/CreateEmployeeForm'
 
 export default function Employees() {
-  const [isEditModal, setEditModal] = useState(null);
-  const [showDeleteEmployeeModal, setDeleteEmployeeModal] = useState(null);
+  const [isEditModal, setEditModal] = useState(null)
+  const [showDeleteEmployeeModal, setDeleteEmployeeModal] = useState(null)
 
-  const { isLoading, employees } = useEmployees();
-  const { isDeleting, deleteEmployee } = useDeleteEmployee();
-  const { slideOver, setSlideOver } = useSlideOver();
+  const { isLoading, employees } = useEmployees()
+  const { isDeleting, deleteEmployee } = useDeleteEmployee()
+  const { slideOver, setSlideOver } = useSlideOver()
 
-  if (isLoading) return <p>Loading..</p>;
+  if (isLoading) return <p>Loading..</p>
 
   return (
     <div className="flex flex-1 flex-row h-screen ml-15">
@@ -31,7 +31,11 @@ export default function Employees() {
               </h3>
             </div>
             <div className="ml-4 mt-2 flex-shrink-0">
-              <Button onClick={() => setSlideOver(SlideOverType.ADD_EMPLOYEE)}>
+              <Button
+                onClick={() =>
+                  setSlideOver({ type: SlideOverType.ADD_EMPLOYEE })
+                }
+              >
                 Create Employee
               </Button>
             </div>
@@ -59,7 +63,7 @@ export default function Employees() {
                   </thead>
                   <tbody>
                     {employees?.map((el, position) => {
-                      const isSelected = null;
+                      const isSelected = null
 
                       return (
                         <TableRow
@@ -125,20 +129,17 @@ export default function Employees() {
                               }
                             )}
                           >
-                            <span
+                            <button
                               className="text-primary"
-                              onClick={() => setEditModal(el.id)}
+                              onClick={() =>
+                                setSlideOver({
+                                  type: SlideOverType.EDIT_EMPLOYEE,
+                                  payload: el.id,
+                                })
+                              }
                             >
                               Edit
-                            </span>
-
-                            {isEditModal === el.id && (
-                              <EditEmployee
-                                employee={el}
-                                employeeId={el.id}
-                                onCloseModal={() => setEditModal(null)}
-                              />
-                            )}
+                            </button>
 
                             <button
                               className="text-primary"
@@ -148,7 +149,7 @@ export default function Employees() {
                             </button>
                           </TableCell>
                         </TableRow>
-                      );
+                      )
                     })}
                   </tbody>
                 </table>
@@ -159,15 +160,23 @@ export default function Employees() {
 
         <SlideOver
           title={
-            slideOver === SlideOverType.ADD_EMPLOYEE
+            slideOver.type === SlideOverType.ADD_EMPLOYEE
               ? 'Create Employee'
-              : slideOver === SlideOverType.EDIT_EMPLOYEE
+              : slideOver.type === SlideOverType.EDIT_EMPLOYEE
               ? 'Edit Employee'
               : ''
           }
-          onClose={() => setSlideOver(SlideOverType.NONE)}
-          open={slideOver === SlideOverType.ADD_EMPLOYEE}
-        ></SlideOver>
+          onClose={() => setSlideOver({ type: SlideOverType.NONE })}
+          open={
+            slideOver.type === SlideOverType.ADD_EMPLOYEE ||
+            slideOver.type === SlideOverType.EDIT_EMPLOYEE
+          }
+        >
+          <CreateEmployeeForm
+            onClose={() => setSlideOver({ type: SlideOverType.NONE })}
+            employeeId={slideOver.payload}
+          />
+        </SlideOver>
 
         <AlertModal
           onClose={() => setDeleteEmployeeModal(null)}
@@ -175,8 +184,8 @@ export default function Employees() {
           confirmationLabel="Delete"
           confirmationVariant="destructive"
           onConfirm={() => {
-            deleteEmployee(showDeleteEmployeeModal);
-            setDeleteEmployeeModal(null);
+            deleteEmployee(showDeleteEmployeeModal)
+            setDeleteEmployeeModal(null)
           }}
           title="Delete employee?"
           description="This action cannot be undone. This will permanently delete employee and remove your data from our servers."
@@ -185,5 +194,5 @@ export default function Employees() {
         />
       </div>
     </div>
-  );
+  )
 }
