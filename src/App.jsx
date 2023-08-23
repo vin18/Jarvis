@@ -4,7 +4,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
 
 import AppLayout from './components/AppLayout';
-import { Button } from './components/ui/button';
 import Dashboard from './pages/Dashboard';
 import Employees from './pages/Employees';
 import Leaves from './pages/Leaves';

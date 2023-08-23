@@ -7,6 +7,7 @@ import {
   UserPlusIcon,
 } from '@heroicons/react/24/outline';
 import Sidebar from './ui/sidebar';
+import { SlideOverProvider } from '../contexts/slideOver';
 
 export default function AppLayout() {
   const navigation = [
@@ -20,7 +21,9 @@ export default function AppLayout() {
     <div className="flex">
       <Sidebar navigation={navigation} />
       <main className="bg-gray-50 h-full w-full">
-        <Outlet />
+        <SlideOverProvider>
+          <Outlet />
+        </SlideOverProvider>
       </main>
     </div>
   );
