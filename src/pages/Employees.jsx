@@ -9,16 +9,22 @@ import { SlideOverType, useSlideOver } from '../contexts/slideOver'
 import { useDeleteEmployee } from '../features/employees/useEmployeeDelete'
 import { useEmployees } from '../features/employees/useEmployees'
 import CreateEmployeeForm from '../components/employees/CreateEmployeeForm'
+import Loader from '../components/common/Loader'
 
 export default function Employees() {
-  const [isEditModal, setEditModal] = useState(null)
   const [showDeleteEmployeeModal, setDeleteEmployeeModal] = useState(null)
 
   const { isLoading, employees } = useEmployees()
   const { isDeleting, deleteEmployee } = useDeleteEmployee()
   const { slideOver, setSlideOver } = useSlideOver()
 
-  if (isLoading) return <p>Loading..</p>
+  if (isLoading) {
+    return (
+      <div className="flex flex-1 flex-row h-screen ml-15">
+        <Loader />
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-1 flex-row h-screen ml-15">
