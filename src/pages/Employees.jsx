@@ -61,8 +61,6 @@ export default function Employees() {
                       <th scope="col">YOE</th>
                       <th scope="col" className="relative py-3 pl-6">
                         <span className="sr-only">Edit</span>
-                      </th>
-                      <th scope="col" className="relative py-3 pl-6">
                         <span className="sr-only">Delete</span>
                       </th>
                     </tr>
@@ -91,7 +89,19 @@ export default function Employees() {
                               }
                             )}
                           >
-                            {el.name}
+                            <div className="flex items-center space-x-3">
+                              <img
+                                src={el.profilePic}
+                                alt={el.name}
+                                className="h-10 w-10 rounded-full"
+                              />
+                              <div className="flex flex-col">
+                                <span>{el.name}</span>
+                                <span className="text-gray-600">
+                                  {el.email}
+                                </span>
+                              </div>
+                            </div>
                           </TableCell>
 
                           <TableCell
@@ -129,7 +139,7 @@ export default function Employees() {
 
                           <TableCell
                             className={classNames(
-                              'whitespace-nowrap py-4 pl-6 flex text-sm font-medium text-gray-900 space-x-6',
+                              'whitespace-nowrap py-6 pl-6 flex text-sm font-medium text-gray-900 space-x-6',
                               {
                                 'text-white': isSelected,
                               }
