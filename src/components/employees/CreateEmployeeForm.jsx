@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Button } from '../ui/button'
+import { Loader2 } from 'lucide-react'
 import { useEmployee } from '../../features/employees/useEmployee'
 import { useEmployeeCreate } from '../../features/employees/useEmployeeCreate'
 import { useEmployeeEdit } from '../../features/employees/useEmployeeEdit'
@@ -16,15 +17,16 @@ const employeeSchema = z.object({
   address1: z.string().nonempty('Address is required'),
   city: z.string().nonempty('City is required'),
   country: z.string().nonempty('Country is required'),
+  profilePic: z.any(),
 })
 
 function CreateEmployeeForm({ onClose, employeeId }) {
   const { isCreating, createEmployee } = useEmployeeCreate()
-  const { editEmployee } = useEmployeeEdit()
+  const { isEditing: isUpdating, editEmployee } = useEmployeeEdit()
+  const isLoading = isCreating || isUpdating
 
   const { employee } = useEmployee(employeeId)
   const isEditing = Boolean(employeeId)
-  console.log(employee)
 
   const { register, handleSubmit, reset, formState } = useForm({
     resolver: zodResolver(employeeSchema),
@@ -33,11 +35,12 @@ function CreateEmployeeForm({ onClose, employeeId }) {
   const { errors } = formState
 
   function onSubmit(data) {
-    console.log(data)
+    const image =
+      typeof data.profilePic === 'string' ? data.profilePic : data.profilePic[0]
 
     if (isEditing) {
       editEmployee(
-        { employee: data, employeeId },
+        { employee: { ...data, profilePic: image }, employeeId },
         {
           onSuccess: () => {
             reset()
@@ -46,12 +49,15 @@ function CreateEmployeeForm({ onClose, employeeId }) {
         }
       )
     } else {
-      createEmployee(data, {
-        onSuccess: () => {
-          reset()
-          onClose()
-        },
-      })
+      createEmployee(
+        { ...data, profilePic: image },
+        {
+          onSuccess: () => {
+            reset()
+            onClose()
+          },
+        }
+      )
     }
   }
 
@@ -102,7 +108,7 @@ function CreateEmployeeForm({ onClose, employeeId }) {
           type="text"
           error={errors?.name}
           placeholder="Sherlock Holmes"
-          disabled={isCreating}
+          disabled={isLoading}
           required
         />
 
@@ -113,7 +119,7 @@ function CreateEmployeeForm({ onClose, employeeId }) {
             type="email"
             error={errors?.email}
             placeholder="sherlock@holmes.com"
-            disabled={isCreating}
+            disabled={isLoading}
             required
           />
 
@@ -123,7 +129,7 @@ function CreateEmployeeForm({ onClose, employeeId }) {
             type="tel"
             error={errors?.phone}
             placeholder="9868482423"
-            disabled={isCreating}
+            disabled={isLoading}
             required
           />
         </div>
@@ -135,7 +141,7 @@ function CreateEmployeeForm({ onClose, employeeId }) {
             type="text"
             error={errors?.experience}
             placeholder="5 years"
-            disabled={isCreating}
+            disabled={isLoading}
             required
           />
 
@@ -145,7 +151,7 @@ function CreateEmployeeForm({ onClose, employeeId }) {
             type="text"
             error={errors?.designation}
             placeholder="Detective"
-            disabled={isCreating}
+            disabled={isLoading}
             required
           />
         </div>
@@ -156,7 +162,7 @@ function CreateEmployeeForm({ onClose, employeeId }) {
           type="text"
           error={errors?.address1}
           placeholder="221B Baker Street"
-          disabled={isCreating}
+          disabled={isLoading}
           required
         />
 
@@ -167,7 +173,7 @@ function CreateEmployeeForm({ onClose, employeeId }) {
             type="text"
             error={errors?.city}
             placeholder="London"
-            disabled={isCreating}
+            disabled={isLoading}
             required
           />
 
@@ -177,13 +183,25 @@ function CreateEmployeeForm({ onClose, employeeId }) {
             type="text"
             error={errors?.country}
             placeholder="United Kingdom"
-            disabled={isCreating}
+            disabled={isLoading}
             required
           />
         </div>
 
-        <div className="flex justify-end mt-2 space-x-3">
-          <Button disabled={isCreating}>Save</Button>
+        <Input
+          label="Profile pic"
+          id="profilePic"
+          type="file"
+          error={errors?.profilePic}
+          disabled={isLoading}
+          required
+        />
+
+        <div className="flex border-t border-gray-200 py-5 justify-end mt-2 space-x-3">
+          <Button disabled={isLoading}>
+            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isLoading ? 'Saving..' : 'Save'}
+          </Button>
           <Button type="reset" onClick={onClose} variant="secondary">
             Cancel
           </Button>
