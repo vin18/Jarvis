@@ -139,7 +139,7 @@ export default function Employees() {
 
                           <TableCell
                             className={classNames(
-                              'whitespace-nowrap py-6 pl-6 flex text-sm font-medium text-gray-900 space-x-6',
+                              'whitespace-nowrap py-7 pl-6 flex text-sm font-medium text-gray-900 space-x-6',
                               {
                                 'text-white': isSelected,
                               }
