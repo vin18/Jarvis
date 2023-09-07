@@ -1,9 +1,9 @@
-import React from 'react';
-import { cn } from '../lib/utils';
-import * as z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { Box, Image, KeyRound, Loader2 } from 'lucide-react';
+import React from 'react'
+import { cn } from '../lib/utils'
+import * as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { Box, Image, KeyRound, Loader2 } from 'lucide-react'
 
 import {
   Card,
@@ -12,7 +12,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '../components/ui/card';
+} from '../components/ui/card'
 import {
   Form,
   FormControl,
@@ -21,12 +21,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../components/ui/form';
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { Label } from '../components/ui/label';
-import Logo from '../../public/vite.svg';
-import { useLogin } from '../features/authentication/useLogin';
+} from '../components/ui/form'
+import { Button } from '../components/ui/button'
+import { Input } from '../components/ui/input'
+import { Label } from '../components/ui/label'
+import Logo from '../../public/vite.svg'
+import { useLogin } from '../features/authentication/useLogin'
 
 const formSchema = z.object({
   email: z
@@ -37,10 +37,10 @@ const formSchema = z.object({
     .string()
     .nonempty('Password is required')
     .min(8, { message: 'Password should be atleast 8 characters' }),
-});
+})
 
 export default function Login() {
-  const { isLoading, login } = useLogin();
+  const { isLoading, login } = useLogin()
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -48,11 +48,11 @@ export default function Login() {
       email: '',
       password: '',
     },
-  });
+  })
 
   const onSubmit = (values) => {
-    login(values);
-  };
+    login(values)
+  }
 
   // TODO:
   // 1. Add icons inside the input box
@@ -142,10 +142,16 @@ export default function Login() {
                 )}
                 {isLoading ? 'Please wait...' : 'Sign In to your account'}
               </Button>
+
+              <div className="w-full">
+                Guest credentials <br />
+                Email - walter@example.com <br /> 
+                Password - Test@1234
+              </div>
             </CardFooter>
           </form>
         </Form>
       </Card>
     </div>
-  );
+  )
 }
